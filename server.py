@@ -13,7 +13,7 @@ class LightServer(object):
 		return self.clients
 
 def main():
-	with Pyro4.Daemon() as daemon:
+	with Pyro4.Daemon(port=5622,nathost="engineal.com",natport=5622) as daemon:
 		server = LightServer()
 		uri = daemon.register(server)
 		with Pyro4.locateNS() as ns:

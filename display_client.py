@@ -44,6 +44,7 @@ def main():
 		
 		ns = Pyro4.locateNS(host="engineal.com", port=5621)
 		uri = ns.lookup("lights.server")
+		print(uri)
 		with Pyro4.Proxy(uri) as server:
 			server.connect(client)
 		
