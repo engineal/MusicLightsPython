@@ -106,6 +106,6 @@ class StripDisplay(object):
 			green = int(self.green_scale.get())
 			blue = int(self.blue_scale.get())
 			
-			new_color = "#%02x%02x%02x" % (red, blue, green)
+			new_color = "#%02x%02x%02x" % (red, green, blue)
 			self.canvas.itemconfig(self._selected_item, fill=new_color)
 			self.strip.setPixelColor(self._selected_item, (red, green, blue))
