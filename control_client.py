@@ -6,7 +6,9 @@ from displays.strip_display import StripDisplay
 class ControlClient(object):
 	def __init__(self):
 		self.displays = []
-		with Pyro4.Proxy("PYRONAME:lights.server") as server:
+		ns = Pyro4.locateNS(host="engineal.com", port=5621)
+		uri = ns.lookup("lights.server")
+		with Pyro4.Proxy(uri) as server:
 			for client in server.get_clients():
 				display = StripDisplay(client)
 				self.displays.append(display)

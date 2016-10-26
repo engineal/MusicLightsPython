@@ -42,7 +42,9 @@ def main():
 		client = StripClient(150)
 		daemon.register(client)
 		
-		with Pyro4.Proxy("PYRONAME:lights.server") as server:
+		ns = Pyro4.locateNS(host="engineal.com", port=5621)
+		uri = ns.lookup("lights.server")
+		with Pyro4.Proxy(uri) as server:
 			server.connect(client)
 		
 		print("Client is now listening for commands.")
