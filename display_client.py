@@ -15,11 +15,11 @@ class StripClient(object):
 		
 	def setBrightness(self, value):
 		#self.strip.setBrightness()
-		print("setBrightness: ", value)
+		print("setBrightness:", value)
 		
 	def setPixelColor(self, pixel, color):
 		#self.strip.setPixelColor(pixel, color)
-		print("setPixelColor: ", pixel, color)
+		print("setPixelColor:", pixel, color)
 		
 	def show(self):
 		#self.strip.show()
@@ -38,7 +38,7 @@ class StripClient(object):
 		return 64
 
 def main():
-	with Pyro4.Daemon() as daemon:
+	with Pyro4.Daemon(host="192.168.1.2", port=5623, nathost="engineal.com", natport=0) as daemon:
 		client = StripClient(150)
 		daemon.register(client)
 		

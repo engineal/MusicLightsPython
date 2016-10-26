@@ -16,7 +16,6 @@ class LightServer(object):
 		self.srvsock.listen(1)
 
 		self.descriptors = [self.srvsock]
-		self.clients = []
 
 	def run(self):
 		while True:
@@ -39,7 +38,6 @@ class LightServer(object):
 							self.broadcast_string(str, sock)
 							sock.close()
 							self.descriptors.remove(sock)
-							self.clients.remove()
 						else:
 							self.decode_command(sock, str)
 					except socket.error as error:
@@ -48,9 +46,8 @@ class LightServer(object):
 						self.broadcast_string(str, sock)
 						sock.close()
 						self.descriptors.remove(sock)
-						self.clients.remove()
 
-	def	decode_command(self, sock, str):
+	def decode_command(self, sock, str):
 		host,port = sock.getpeername()
 		newstr = '[%s:%s] %s' % (host, port, str)
 		if str == "list clients":
@@ -68,11 +65,10 @@ class LightServer(object):
 	def accept_new_connection(self):
 		newsock, (remhost, remport) = self.srvsock.accept()
 		self.descriptors.append(newsock)
-		self.clients.append()
 
 		str = 'Client joined %s:%s' % (remhost, remport)
 		self.broadcast_string(str, newsock)
 
 if __name__ == "__main__":
-	server = LightServer(('localhost', 10000))
+	server = LightServer(('192.168.1.2', 5622))
 	server.run()
