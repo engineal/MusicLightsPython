@@ -10,7 +10,6 @@ class ControlClient(object):
 		uri = ns.lookup("lights.server")
 		with Pyro4.Proxy(uri) as server:
 			for client in server.get_clients():
-				print(client)
 				display = StripDisplay(client)
 				self.displays.append(display)
 
