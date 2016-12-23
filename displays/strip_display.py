@@ -46,7 +46,7 @@ class StripDisplay(object):
 		self.canvas.bind("<B1-Motion>", self.onMotion)
 		
 		for i in range(0, 5):
-			self.pixels.append(Pixel(self.canvas, (20*i)+5, 5))
+			self.pixels.append(Pixel(self.strip, self.canvas, (20*i)+5, 5))
 		
 	def onPixelButtonPress(self, event):
 		'''Begin drag of an object'''

@@ -2,7 +2,8 @@ from tkinter import *
 from tkinter import ttk
 
 class Pixel(object):
-	def __init__(self, canvas, x, y):
+	def __init__(self, strip, canvas, x, y):
+		self.strip = strip
 		self.canvas = canvas
 		self._selected = False
 		self._color = (255, 0, 0)
@@ -26,6 +27,7 @@ class Pixel(object):
 
 	@color.setter
 	def color(self, value):
-		self._color = value
-		self.canvas.itemconfig(self.id, fill="#%02x%02x%02x" % value)
-		#self.strip.setPixelColor(self.id, value)
+		if self._color != value:
+			self._color = value
+			self.canvas.itemconfig(self.id, fill="#%02x%02x%02x" % value)
+			self.strip.setPixelColor(self.id, value)
