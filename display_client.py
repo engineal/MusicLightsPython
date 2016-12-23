@@ -5,20 +5,23 @@ from dotstar import Adafruit_DotStar
 class StripClient(object):
 	def __init__(self, numpixels):
 		self.numpixels = numpixels
-		strip = Adafruit_DotStar(numpixels)
-		strip.begin()
-		strip.setBrightness(64)
+		self.strip = Adafruit_DotStar(numpixels)
+		self.strip.begin()
+		self.strip.setBrightness(64)
 
 	def clear(self):
 		self.strip.clear()
 		print("clear")
 		
 	def setBrightness(self, value):
-		self.strip.setBrightness()
+		self.strip.setBrightness(value)
 		print("setBrightness:", value)
 		
 	def setPixelColor(self, pixel, color):
-		self.strip.setPixelColor(pixel, color)
+		color_value = ((color[0]&0xFF) << 8) | ((color[1]&0xFF) << 16) | (color[2]&0xFF)
+		print("%x"%color_value)
+		self.strip.setPixelColor(pixel, color_value)
+		self.strip.show()
 		print("setPixelColor:", pixel, color)
 		
 	def show(self):
@@ -34,11 +37,11 @@ class StripClient(object):
 		return self.numpixels
 		
 	def getBrightness(self):
-		return self.strip.setBrightness()
+		return self.strip.getBrightness()
 		return 64
 
 def main():
-	with Pyro4.Daemon() as daemon:
+	with Pyro4.Daemon(host="192.168.1.10", port=5623) as daemon:
 		client = StripClient(150)
 		daemon.register(client)
 		
