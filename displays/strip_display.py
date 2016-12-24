@@ -45,7 +45,7 @@ class StripDisplay(object):
 		self.canvas.bind("<ButtonRelease-1>", self.onButtonRelease)
 		self.canvas.bind("<B1-Motion>", self.onMotion)
 		
-		for i in range(0, 5):
+		for i in range(0, 20):
 			self.pixels.append(Pixel(self.strip, self.canvas, (20*i)+5, 5))
 		
 	def onPixelButtonPress(self, event):

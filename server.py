@@ -9,6 +9,10 @@ class LightServer(object):
 		self.clients.append(client)
 		print("Client connected")
 
+	def disconnect(self, client):
+		self.clients.remove(client)
+		print("Client disconnected")
+
 	def get_clients(self):
 		return self.clients
 

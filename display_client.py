@@ -15,11 +15,11 @@ class StripClient(object):
 		
 	def setBrightness(self, value):
 		self.strip.setBrightness(value)
+		self.strip.show()
 		print("setBrightness:", value)
 		
 	def setPixelColor(self, pixel, color):
 		color_value = ((color[0]&0xFF) << 8) | ((color[1]&0xFF) << 16) | (color[2]&0xFF)
-		print("%x"%color_value)
 		self.strip.setPixelColor(pixel, color_value)
 		self.strip.show()
 		print("setPixelColor:", pixel, color)
@@ -53,6 +53,9 @@ def main():
 		
 		print("Client is now listening for commands.")
 		daemon.requestLoop()
+		
+		with Pyro4.Proxy(uri) as server:
+			server.disconnect(client)
 	
 if __name__ == "__main__":
     main()
