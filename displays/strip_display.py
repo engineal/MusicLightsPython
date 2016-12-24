@@ -3,6 +3,7 @@ from tkinter import ttk
 from pixel import Pixel
 from effects.single_effect import SingleEffect
 from effects.fade_effect import FadeEffect
+from effects.christmas_effect import ChristmasEffect
 
 class StripDisplay(object):
 	def __init__(self, strip):
@@ -20,16 +21,16 @@ class StripDisplay(object):
 		ttk.Label(parent, text="Brightness:").grid(column=0, row=3, sticky=(W, E))
 		ttk.Scale(parent, orient=HORIZONTAL, from_=0, to=255, value=self.strip.getBrightness(), command=self.setBrightness).grid(column=1, row=3, sticky=(W, E))
 		
-		self.effect_box = ttk.Combobox(parent, values=("Single", "Fade", "Script"), state='readonly')
+		self.effect_box = ttk.Combobox(parent, values=("Single", "Fade", "Christmas", "Script"), state='readonly')
 		self.effect_box.current(0)
 		self.effect_box.bind("<<ComboboxSelected>>", self.effectChanged)
 		self.effect_box.grid(column=0, row=4, sticky=(N, W, E))
 		
-		color_group = ttk.LabelFrame(parent, text='Effect')
-		color_group.grid(column=1, row=4, sticky=(W, E))
-		color_group.columnconfigure(0, weight=0)
-		color_group.columnconfigure(1, weight=1)
-		self.effect.createUI(color_group)
+		self.effect_frame = ttk.LabelFrame(parent, text='Effect')
+		self.effect_frame.grid(column=1, row=4, sticky=(W, E))
+		self.effect_frame.columnconfigure(0, weight=0)
+		self.effect_frame.columnconfigure(1, weight=1)
+		self.effect.createUI(self.effect_frame)
 		
 		self.canvas = Canvas(parent, background="#FFFFFF")
 		self.canvas.grid(column=0, row=5, columnspan=2, sticky=(N, W, E, S))
@@ -128,4 +129,14 @@ class StripDisplay(object):
 		self.strip.setBrightness(int(float(value)))
 		
 	def effectChanged(self, event):
-		print(self.effect_box.get())
+		if self.effect_box.get() == "Single":
+			self.effect = SingleEffect(self.pixels)
+		elif self.effect_box.get() == "Fade":
+			self.effect = FadeEffect(self.pixels)
+		elif self.effect_box.get() == "Christmas":
+			self.effect = ChristmasEffect(self.pixels)
+
+		for child in self.effect_frame.winfo_children():
+			child.destroy()
+		self.effect.createUI(self.effect_frame)
+		
